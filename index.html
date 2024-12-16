@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>findMyChild - Parents Portal</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .login-container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 20px;
+      }
+      .nav-container {
+        background-color: #007bff;
+        padding: 10px 20px;
+        color: white;
+      }
+      .nav-container a {
+        color: white;
+        margin-right: 15px;
+        text-decoration: none;
+      }
+      .left-frame {
+        border-right: 1px solid #ccc;
+        padding: 20px;
+      }
+      .right-frame img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginPage" class="login-container">
+      <img src="./img/logo.png" alt="App Logo" class="logo" />
+      <div id="gSignInWrapper"></div>
+    </div>
+
+    <div id="searchPage" style="display: none">
+      <!-- Global Navigation -->
+      <div
+        class="nav-container d-flex justify-content-between align-items-center"
+      >
+        <div>App Title</div>
+        <div>
+          <a href="#">Instructions</a>
+          <a href="#">Find Kids</a>
+          <a href="#">Contact NGO</a>
+          <a href="#">Report Police</a>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="d-flex flex-row" style="height: calc(100vh - 50px)">
+        <!-- Left Frame -->
+        <div class="left-frame" style="width: 35%; overflow-y: auto">
+          <div class="mb-3">
+            <textarea
+              class="form-control"
+              rows="10"
+              placeholder="Type your search query here..."
+            ></textarea>
+          </div>
+          <button class="btn btn-primary w-100">Search</button>
+        </div>
+
+        <!-- Right Frame -->
+        <div
+          class="right-frame flex-grow-1 d-flex align-items-center justify-content-center"
+        >
+          <img
+            src="https://via.placeholder.com/600x400"
+            alt="Search Results"
+            id="resultImage"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function handleCredentialResponse(response) {
+        const data = JSON.parse(atob(response.credential.split(".")[1]));
+        alert(`Welcome, ${data.name}`);
+        document.querySelector(
+          ".nav-container div"
+        ).innerText = `Welcome, ${data.name}`;
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("searchPage").style.display = "block";
+      }
+
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id:
+            "85587380799-k5t36fd1qtdda8jv6nbe7bsk3t2iq3cc.apps.googleusercontent.com",
+          callback: handleCredentialResponse,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("gSignInWrapper"),
+          { theme: "outline", size: "large" } // Customize the button
+        );
+      };
+    </script>
+  </body>
+</html>

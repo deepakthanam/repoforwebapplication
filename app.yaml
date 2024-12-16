@@ -1,0 +1,29 @@
+runtime: nodejs18 # Specifies the Node.js runtime version
+instance_class: F2 # Optional: Choose the instance class (F1, F2, etc.)
+
+env: standard # App Engine Standard Environment
+
+handlers:
+  - url: /.* # Routes all URLs to the Node.js application
+    script: auto
+
+env_variables: # Set environment variables for your application
+  NODE_ENV: production
+  PORT: 8080 # Default App Engine port
+  CORS_ORIGIN: "https://childfindapp.uc.r.appspot.com" # CORS origin for production (update as needed)
+  SESSION_SECRET: "d2c8e7f3b9f8dc9d7d9f2c6e7e3f4a8d2b6f9e7f5a9c8b7d2f4a9c7e3b2f9d8" # Secure secret key for sessions
+
+automatic_scaling:
+  target_cpu_utilization: 0.65 # Adjust based on your app's expected usage
+  min_instances: 1 # Keep at least one instance always running
+  max_instances: 5 # Set the maximum number of instances
+
+resources:
+  memory_gb: 0.5 # Allocate memory (adjust based on your app's requirements)
+
+health_check: # Ensure App Engine can monitor your app's health
+  enable_health_check: True
+  check_interval_sec: 10
+  timeout_sec: 4
+  unhealthy_threshold: 3
+  healthy_threshold: 2
